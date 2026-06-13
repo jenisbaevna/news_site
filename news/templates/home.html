@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Portal</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+
+               <h1 class="text-3xl font-extrabold text-blue-600">
+    News Portal
+</h1>
+
+               <div class="flex items-center gap-5">
+
+    <a href="/">Bas bet</a>
+    <a href="{% url 'category_news' 'sport' %}">Sport</a>
+    <a href="{% url 'category_news' 'tech' %}">Texnologiya</a>
+    <a href="{% url 'category_news' 'politics' %}">Siyasat</a>
+    <a href="{% url 'category_news' 'education' %}">Bilim</a>
+
+    {% if user.is_staff %}
+<a href="{% url 'dashboard' %}"
+   class="text-green-600 font-semibold">
+   Dashboard
+</a>
+{% endif %}
+
+    {% if user.is_authenticated %}
+        <span class="text-blue-600 font-semibold">
+            👤 {{ user.username }}
+        </span>
+
+        <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit"
+            class="text-red-500 cursor-pointer">
+        Logout
+    </button>
+</form>
+  {% else %}
+
+<a href="{% url 'login' %}">
+    Login
+</a>
+
+<a href="{% url 'register' %}">
+    Register
+</a>
+
+{% endif %}
+
+  <form method="GET" action="/" class="ml-4">
+    <div class="relative">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="🔍 Izlew..."
+            class="w-64 px-4 py-2 rounded-xl border border-gray-300
+       focus:outline-none focus:ring-2 focus:ring-blue-500
+       bg-gray-50"
+        >
+
+    </div>
+</form>
+
+
+</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-blue-600 text-white py-5">
+        <div class="max-w-7xl mx-auto px-4">
+
+            <h1 class="text-5xl font-bold mb-4">
+                Sońǵı jańalıqlar
+            </h1>
+
+            <p class="text-lg">
+                Eń tez hám senimli jańalıqlar portalı
+            </p>
+
+        </div>
+    </section>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+        <!-- Bastı jańalıq -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow overflow-hidden">
+
+            {% with news.first as top_news %}
+
+            {% if top_news.image %}
+            <a href="{% url 'news_detail' top_news.id %}">
+                <img src="{{ top_news.image.url }}"
+                     class="w-full h-96 object-cover">
+            </a>
+            {% endif %}
+
+            <div class="p-6">
+                <h2 class="text-3xl font-bold mb-4">
+                    {{ top_news.title }}
+                </h2>
+
+                <p class="text-gray-600">
+                    {{ top_news.content|truncatewords:40 }}
+                </p>
+            </div>
+
+            {% endwith %}
+
+        </div>
+
+        <!-- Sońǵı jańalıqlar -->
+         
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h3 class="text-2xl font-bold mb-4">
+                Sońǵı jańalıqlar
+            </h3>
+
+            {% for item in news|slice:"1:6" %}
+            <div class="border-b py-3">
+
+                <a href="{% url 'news_detail' item.id %}"
+                   class="font-semibold hover:text-blue-600">
+
+                    {{ item.title }}
+
+                </a>
+
+                <div class="text-sm text-gray-500 mt-1">
+                    {{ item.created_at|date:"d.m.Y" }}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+    <!-- News Cards -->
+<div class="max-w-7xl mx-auto px-4 py-10">
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        {% for item in news %}
+<div class="bg-white rounded-xl shadow p-5 flex flex-col">
+
+   {% if item.image %}
+<a href="{% url 'news_detail' item.id %}">
+    <img src="{{ item.image.url }}"
+         class="w-full h-60 object-cover rounded-lg mb-4">
+</a>
+{% endif %}
+
+    <h2 class="text-xl font-bold mb-3">
+        {{ item.title }}
+    </h2>
+
+    <p class="text-gray-600">
+        {{ item.content|truncatewords:20 }}
+    </p>
+    <div class="text-sm text-gray-500 mt-3">
+    👤 {{ item.author }} | 📅 {{ item.created_at|date:"d.m.Y" }}
+    👁️ {{ item.views }}
+</div>
+
+    <div class="mt-auto pt-4">
+        <a href="{% url 'news_detail' item.id %}"
+   class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
+    Tolıq oqıw
+    
+    
+</a>
+
+    </div>
+    
+
+</div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-6 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            © 2026 News Portal. Barlyq huqıqlar qorǵalǵan.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<div class="max-w-7xl mx-auto p-8">
+
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+            <h1 class="text-5xl font-bold text-gray-800">
+                📊 Admin Dashboard
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                News Portal basqarıw paneli
+            </p>
+        </div>
+
+        <div class="flex gap-3">
+
+            <a href="/"
+               class="bg-gray-700 text-white px-5 py-3 rounded-xl hover:bg-gray-900">
+                🌐 Sitege ótiw
+            </a>
+
+            <a href="{% url 'news_create' %}"
+               class="bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700">
+                ➕ Jańalıq qosıw
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-blue-600 text-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-lg">📰 Jańalıqlar</h3>
+            <p class="text-4xl font-bold mt-3">
+                {{ news.count }}
+            </p>
+        </div>
+
+        <div class="bg-green-600 text-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-lg">👁️ Kóriliwler</h3>
+            <p class="text-4xl font-bold mt-3">
+                Active
+            </p>
+        </div>
+
+        <div class="bg-purple-600 text-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-lg">📂 Kategoriyalar</h3>
+            <p class="text-4xl font-bold mt-3">
+                4
+            </p>
+        </div>
+
+        <div class="bg-red-600 text-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-lg">🛡 Admin</h3>
+            <p class="text-xl font-bold mt-3">
+                {{ user.username }}
+            </p>
+        </div>
+
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+
+        <div class="flex justify-between items-center p-6 border-b">
+
+            <h2 class="text-2xl font-bold">
+                Sońǵı jańalıqlar
+            </h2>
+
+        </div>
+
+        <table class="w-full">
+
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="text-left py-4 px-4">Jańalıq</th>
+                    <th class="text-left py-4 px-4">Kategoriya</th>
+                    <th class="text-left py-4 px-4">Kóriliw</th>
+                    <th class="text-left py-4 px-4">Sáne</th>
+                    <th class="text-center py-4 px-4">Ámeller</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for item in news %}
+
+                <tr class="border-b hover:bg-gray-50 transition">
+
+                    <td class="py-4 px-4 font-medium">
+                        {{ item.title }}
+                    </td>
+
+                    <td class="px-4">
+                        {{ item.category }}
+                    </td>
+
+                    <td class="px-4">
+                        👁️ {{ item.views }}
+                    </td>
+
+                    <td class="px-4">
+                        {{ item.created_at|date:"d.m.Y" }}
+                    </td>
+
+                    <td class="px-4 text-center">
+
+                        <a href="{% url 'news_detail' item.id %}"
+                           class="bg-blue-500 text-white px-3 py-2 rounded-lg text-sm">
+                            Kóriw
+                        </a>
+
+                        <a href="{% url 'news_edit' item.id %}"
+                           class="bg-yellow-500 text-white px-3 py-2 rounded-lg text-sm">
+                            Edit
+                        </a>
+
+                        <a href="{% url 'news_delete' item.id %}"
+                           class="bg-red-500 text-white px-3 py-2 rounded-lg text-sm">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

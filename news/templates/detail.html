@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ news.title }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+
+    {% if news.image %}
+    <img src="{{ news.image.url }}"
+         class="w-full h-96 object-cover rounded-lg mb-6">
+    {% endif %}
+
+    <h1 class="text-4xl font-bold mb-4">
+        {{ news.title }}
+    </h1>
+
+    <div class="text-gray-500 mb-6">
+    👤 Admin |
+    📅 {{ news.created_at|date:"d.m.Y" }}
+    👁️ {{ news.views }} ret oqıldı
+</div>
+
+    <p class="text-lg leading-8">
+        {{ news.content }}
+    </p>
+
+    <a href="/"
+       class="inline-block mt-6 bg-blue-600 text-white px-4 py-2 rounded">
+        ← Bas betke qaytıw
+    </a>
+
+</div>
+
+</body>
+</html>
